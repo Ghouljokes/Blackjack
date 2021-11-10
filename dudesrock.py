@@ -7,6 +7,9 @@ class Dude:
         self.hand = []
         self.chips = startingchips
         self.name = name
+        self.bet = 0
+        self.can_surrender = True
+        self.can_double_down = True
     
     def draw(self, cards: list) -> None:
         to_draw = random.choice(cards)
@@ -21,6 +24,8 @@ class Dude:
         self.hand = []
         self.draw(cards)
         self.draw(cards)
+        self.can_surrender = True
+        self.can_double_down = self.bet * 2 <= self.chips
     
     def debug_draw(self, index: int, cards: list) -> None:
         self.hand.append(copy.deepcopy(cards[index]))

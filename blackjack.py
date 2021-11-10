@@ -6,11 +6,6 @@ from deck import deck as deck
 
 
 class User(Dude):
-    def __init__(self, startingchips: int, name: str) -> None:
-        self.hand = []
-        self.chips = startingchips
-        self.name = name
-        self.bet = 0
 
     def place_bet(self, to_match: object) -> None:
         self.bet = int(input("Place your bet: "))
@@ -28,9 +23,9 @@ player = User(1000, "Player")
 
 def play_round() -> None:
     print(f"House chips: {dealer.chips},  Player chips: {player.chips}")
-    can_surrender = True
+    #can_surrender = True
     player.place_bet(dealer)
-    can_double_down = player.bet * 2 <= player.chips
+    #can_double_down = player.bet * 2 <= player.chips
     for card in deck:
         card.in_deck = True
     dealer.prep_round(deck)
@@ -46,21 +41,21 @@ def play_round() -> None:
         print(player.show_hand())
         print("Your bet: " + str(player.bet))
         print("What would you like to do? Select a number:\n   1) hit\n   2) stay")
-        if can_surrender:
+        if player.can_surrender:
             print("   3) surrender")
-        if can_double_down:
+        if player.can_double_down:
             print("   4) double down")
         choice = input()
         if choice == "1":
             player.draw(deck)
-            can_surrender, can_double_down = False, False
+            player.can_surrender, player.can_double_down = False, False
         elif choice == "2":
             break
-        elif choice == "3" and can_surrender:
+        elif choice == "3" and player.can_surrender:
             print(f"You surrender and lose {int(.5 * player.bet)} chips")
             player.earns_from(int(-.5 * player.bet), dealer)
             return
-        elif choice == "4" and can_double_down:
+        elif choice == "4" and player.can_double_down:
             player.bet *= 2
             player.draw(deck)
             break
