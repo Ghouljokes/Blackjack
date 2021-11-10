@@ -50,9 +50,9 @@ dealer = Dude(5000, "Dealer")
 player = User(1000, "Player")
 
 
-def player_earns(amount: int) -> None:
+""" def player_earns(amount: int) -> None:
     player.chips += amount
-    dealer.chips -= amount
+    dealer.chips -= amount """
 
 
 def play_round() -> None:
@@ -68,7 +68,7 @@ def play_round() -> None:
 
     if dealer.get_total() == 21:
         print(f"{dealer.show_hand()}\n Blackjack! Dealer wins {int(1.5 * player.bet)} chips.")
-        player_earns(int(-1.5 * player.bet))
+        player.earns_from(int(-1.5 * player.bet), dealer)
         return
 
     while player.get_total() < 21:
@@ -87,7 +87,7 @@ def play_round() -> None:
             break
         elif choice == "3" and can_surrender:
             print(f"You surrender and lose {int(.5 * player.bet)} chips")
-            player_earns(int(-.5 * player.bet))
+            player.earns_from(int(-.5 * player.bet), dealer)
             return
         elif choice == "4" and can_double_down:
             player.bet *= 2
@@ -99,11 +99,11 @@ def play_round() -> None:
 
     if player.get_total() == 21:
         print(f"Blackjack! You win {int(1.5 * player.bet)} chips.")
-        player_earns(int(1.5 * player.bet))
+        player.earns_from(int(1.5 * player.bet), dealer)
         return
     elif player.get_total() > 21:
         print(f"You overshoot and lose {player.bet} chips.")
-        player_earns(-player.bet)
+        player.earns_from(-player.bet, dealer)
         return
 
     time.sleep(0.5)
@@ -114,13 +114,13 @@ def play_round() -> None:
 
     if dealer.get_total() > 21:
         print(f"House overshot. You gain {player.bet} chips")
-        player_earns(player.bet) 
+        player.earns_from(player.bet, dealer) 
     elif dealer.get_total() > player.get_total():
         print(f"House wins. You lose {player.bet} chips")
-        player_earns(-player.bet)
+        player.earns_from(-player.bet, dealer)
     elif dealer.get_total() < player.get_total():
         print(f"You win. You gain {player.bet} chips")
-        player_earns(player.bet)
+        player.earns_from(player.bet, dealer)
     else:
         print("Evened out")
 
