@@ -1,5 +1,6 @@
 import random
 import copy
+import time
 
 """Stuff I wanna add:
     option for npc player(s)
@@ -57,6 +58,14 @@ class Dude:
             if card.value == 11:
                 card.value = 1
                 return
+
+    def auto_draw(self, goal: int, view_hand=True) -> None:
+        while self.get_total() < goal:
+            self.draw()
+            if view_hand:
+                print(self.show_hand())
+                time.sleep(0.5)
+
 
 
 def place_bet() -> int:
@@ -130,11 +139,11 @@ def play_round() -> None:
         player_earns(-your_bet)
         return
 
+    time.sleep(0.5)
     print(dealer.show_hand())
+    time.sleep(0.5)
 
-    while dealer.get_total() < 16:
-        dealer.draw() #try and get dealer to pause a bit before each draw
-        print(dealer.show_hand())
+    dealer.auto_draw(16)
 
     if dealer.get_total() > 21:
         print(f"House overshot. You gain {your_bet} chips")
