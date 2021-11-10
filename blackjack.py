@@ -3,14 +3,14 @@ import copy
 import time
 from dudesrock import Dude
 
-"""Stuff I wanna add:
-    option for npc player(s)
-    split
-Stuff I need to do:
-    organize the code relating to playing the game
-"""
+
 deck = []
-id = 1
+class Player(Dude):
+    
+    pass
+player = Player(1000, "Player")
+dealer = Dude(5000, "Dealer")
+
 class Card:
     def __init__(self, value: int, name: str, suit: str) -> None:
         self.value = value
@@ -53,12 +53,8 @@ def play_round() -> None:
     can_double_down = your_bet * 2 <= player.chips
     for card in deck:
         card.in_deck = True
-    dealer.hand = []
-    player.hand = []
-    dealer.draw(deck)
-    dealer.draw(deck)
-    player.draw(deck)
-    player.draw(deck)
+    dealer.prep_round(deck)
+    player.prep_round(deck)
     print(f"Dealer's hand: {dealer.hand[0].get_full_name()}, hidden")
 
     if dealer.get_total() == 21:
@@ -108,7 +104,7 @@ def play_round() -> None:
     dealer.auto_draw(16, deck)
 
     if dealer.get_total() > 21:
-        print(f"House overshot. You gain {your_bet} chips")
+        print(f"House overshot. You gain {your_bet} chips.")
         player_earns(your_bet) 
     elif dealer.get_total() > player.get_total():
         print(f"House wins. You lose {your_bet} chips")
@@ -120,8 +116,6 @@ def play_round() -> None:
         print("Evened out")
 
 
-player = Dude(1000, "Player")
-dealer = Dude(5000, "Dealer")
 while player.chips > 0 and dealer.chips > 0:
     play_round()
 if player.chips <= 0:

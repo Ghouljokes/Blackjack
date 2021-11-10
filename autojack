@@ -1,0 +1,108 @@
+import random
+import copy
+import time
+from dudesrock import Dude
+
+
+deck = []
+id = 1
+class Airobot1(Dude):
+    pass
+dealer = Dude(500, "Dealer")
+robot1 = Airobot1(100, "robot1")
+
+class Card:
+    def __init__(self, value: int, name: str, suit: str) -> None:
+        self.value = value
+        self.name = name
+        self.suit = suit
+        self.in_deck = True
+    
+    def get_full_name(self) -> str:
+        return f"{self.name} of {self.suit}"
+        
+
+for suit in ["hearts", "diamonds", "spades", "clubs"]:
+    deck.append(Card(11, "Ace", suit))
+    for i in range(2, 11):
+        deck.append(Card(i, str(i), suit))
+    for face in ["Jack", "Queen", "King"]:
+        deck.append(Card(10, face, suit))
+
+
+def place_bet() -> int:
+    bet = robot1.chips // 2
+    if bet > dealer.chips:
+        bet = dealer.chips
+    elif bet <= 10:
+        bet = robot1.chips
+    print(f"{robot1.name} bets {bet} chips.")
+    return bet
+
+
+def robot1_earns(amount: int) -> None:
+    robot1.chips += amount
+    dealer.chips -= amount
+
+
+def play_round() -> None:
+    print(f"House chips: {dealer.chips}, robot1 chips: {robot1.chips}")
+    can_surrender = True
+    robot1_bet = place_bet()
+    can_double_down = robot1_bet * 2 <= robot1.chips
+    for card in deck:
+        card.in_deck = True
+    dealer.prep_round(deck)
+    robot1.prep_round(deck)
+    print(f"Dealer's hand: {dealer.hand[0].get_full_name()}, hidden")
+
+    #time.sleep(0.5)
+
+    if dealer.get_total() == 21:
+        print(f"{dealer.show_hand()}\n Blackjack! Dealer wins {int(1.5 * robot1_bet)} chips.")
+        robot1_earns(int(-1.5 * robot1_bet))
+        return
+
+    while robot1.get_total() < 21:
+        print(robot1.show_hand())
+        print("Robot1's bet: " + str(robot1_bet))
+        if robot1.get_total() < 16:
+            robot1.draw(deck)
+            print("Robot1 chooses Hit")
+            can_surrender, can_double_down = False, False
+        else:
+            print("Robot1 chooses to stay")
+            break
+    #time.sleep(0.5)
+    print(robot1.show_hand())
+    #time.sleep(0.3)
+    if robot1.get_total() == 21:
+        print(f"Blackjack! Robot1 wins {int(1.5 * robot1_bet)} chips.")
+        robot1_earns(int(1.5 * robot1_bet))
+        return
+    elif robot1.get_total() > 21:
+        print(f"Robot1 overshoot and lose {robot1_bet} chips.")
+        robot1_earns(-robot1_bet)
+        return
+
+    dealer.auto_draw(16, deck)
+
+    if dealer.get_total() > 21:
+        print(f"House overshot. Robot1 gains {robot1_bet} chips.")
+        robot1_earns(robot1_bet)
+    elif dealer.get_total() > robot1.get_total():
+        print(f"House wins. Robot1 loses {robot1_bet} chips")
+        robot1_earns(-robot1_bet)
+    elif dealer.get_total() < robot1.get_total():
+        print(f"Robot1 wins. Robot1 gains {robot1_bet} chips")
+        robot1_earns(robot1_bet)
+    else:
+        print("Evened out")
+
+
+while  robot1.chips > 0 and dealer.chips > 0:
+    play_round()
+if robot1.chips <= 0:
+    print("Robot1 lost all their chips")
+elif dealer.chips <= 0:
+    print("The casino is now bankrupt")

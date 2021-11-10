@@ -5,7 +5,6 @@ import time
 class Dude:
     def __init__(self, startingchips: int, name: str) -> None:
         self.hand = []
-        self.total = 0
         self.chips = startingchips
         self.name = name
     
@@ -17,6 +16,11 @@ class Dude:
         self.hand.append(copy.deepcopy(to_draw))
         if self.get_total() > 21:
             self.lower_ace()
+
+    def prep_round(self, cards: list) -> None:
+        self.hand = []
+        self.draw(cards)
+        self.draw(cards)
     
     def debug_draw(self, index: int, cards: list) -> None:
         self.hand.append(copy.deepcopy(cards[index]))
@@ -38,4 +42,4 @@ class Dude:
             self.draw(cards)
             if view_hand:
                 print(self.show_hand())
-                time.sleep(0.5)
+                #time.sleep(0.5)
