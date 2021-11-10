@@ -31,7 +31,7 @@ for suit in ["hearts", "diamonds", "spades", "clubs"]:
 
 
 def place_bet() -> int:
-    bet = robot1.chips // 2
+    bet = robot1.chips // 3
     if bet > dealer.chips:
         bet = dealer.chips
     elif bet <= 10:
@@ -65,13 +65,21 @@ def play_round() -> None:
 
     while robot1.get_total() < 21:
         print(robot1.show_hand())
-        print("Robot1's bet: " + str(robot1_bet))
-        if robot1.get_total() < 16:
+        if robot1.get_total() in range(9,12) and can_double_down:
+            print("Robot1 chooses to double down.")
+            robot1_bet *= 2
             robot1.draw(deck)
-            print("Robot1 chooses Hit")
+            break
+        elif robot1.get_total() < 16:
+            robot1.draw(deck)
+            print("Robot1 chooses to hit.")
             can_surrender, can_double_down = False, False
+        elif robot1.get_total() == 16 and can_surrender:
+            print("Robot1 chooses to surrender.")
+            robot1_earns(int(-.5 * robot1_bet))
+            return
         else:
-            print("Robot1 chooses to stay")
+            print("Robot1 chooses to stay.")
             break
     #time.sleep(0.5)
     print(robot1.show_hand())
@@ -81,9 +89,11 @@ def play_round() -> None:
         robot1_earns(int(1.5 * robot1_bet))
         return
     elif robot1.get_total() > 21:
-        print(f"Robot1 overshoot and lose {robot1_bet} chips.")
+        print(f"Robot1 overshoots and loses {robot1_bet} chips.")
         robot1_earns(-robot1_bet)
         return
+
+    print(dealer.show_hand())
 
     dealer.auto_draw(16, deck)
 

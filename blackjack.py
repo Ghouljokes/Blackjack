@@ -143,7 +143,7 @@ def play_round() -> None:
     print(dealer.show_hand())
     time.sleep(0.5)
 
-    dealer.auto_draw(16)
+    dealer.auto_draw(16, deck)
 
     if dealer.get_total() > 21:
         print(f"House overshot. You gain {your_bet} chips")
