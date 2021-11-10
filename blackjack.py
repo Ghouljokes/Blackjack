@@ -1,6 +1,7 @@
 import random
 import copy
 import time
+from dudesrock import Dude
 
 """Stuff I wanna add:
     option for npc player(s)
@@ -8,7 +9,7 @@ import time
 Stuff I need to do:
     organize the code relating to playing the game
 """
-cards = []
+deck = []
 id = 1
 class Card:
     def __init__(self, value: int, name: str, suit: str) -> None:
@@ -21,51 +22,11 @@ class Card:
         return f"{self.name} of {self.suit}"
 
 for suit in ["hearts", "diamonds", "spades", "clubs"]:
-    cards.append(Card(11, "Ace", suit))
+    deck.append(Card(11, "Ace", suit))
     for i in range(2, 11):
-        cards.append(Card(i, str(i), suit))
+        deck.append(Card(i, str(i), suit))
     for face in ["Jack", "Queen", "King"]:
-        cards.append(Card(10, face, suit))
-
-
-class Dude:
-    def __init__(self, startingchips: int, name: str) -> None:
-        self.hand = []
-        self.total = 0
-        self.chips = startingchips
-        self.name = name
-    
-    def draw(self) -> None:
-        to_draw = random.choice(cards)
-        while not to_draw.in_deck:
-            to_draw = random.choice(cards)
-        to_draw.in_deck = False
-        self.hand.append(copy.deepcopy(to_draw))
-        if self.get_total() > 21:
-            self.lower_ace()
-    
-    def debug_draw(self, index: int) -> None:
-        self.hand.append(copy.deepcopy(cards[index]))
-
-    def get_total(self) -> int:
-        return sum([card.value for card in self.hand])
-
-    def show_hand(self) -> str:
-        return self.name + " hand: " + ", ".join(card.get_full_name() for card in self.hand)
-
-    def lower_ace(self) -> None:
-        for card in self.hand:
-            if card.value == 11:
-                card.value = 1
-                return
-
-    def auto_draw(self, goal: int, view_hand=True) -> None:
-        while self.get_total() < goal:
-            self.draw()
-            if view_hand:
-                print(self.show_hand())
-                time.sleep(0.5)
-
+        deck.append(Card(10, face, suit))
 
 
 def place_bet() -> int:
@@ -89,14 +50,10 @@ def play_round() -> None:
     can_surrender = True
     your_bet = place_bet()
     can_double_down = your_bet * 2 <= player.chips
-    for card in cards:
+    for card in deck:
         card.in_deck = True
-    dealer.hand = []
-    player.hand = []
-    dealer.draw()
-    dealer.draw()
-    player.draw()
-    player.draw()
+    dealer.prep_round(deck)
+    player.prep_round(deck)
     print(f"Dealer's hand: {dealer.hand[0].get_full_name()}, hidden")
 
     if dealer.get_total() == 21:
@@ -114,7 +71,7 @@ def play_round() -> None:
             print("   4) double down")
         choice = input()
         if choice == "1":
-            player.draw()
+            player.draw(deck)
             can_surrender, can_double_down = False, False
         elif choice == "2":
             break
@@ -124,7 +81,7 @@ def play_round() -> None:
             return
         elif choice == "4" and can_double_down:
             your_bet *= 2
-            player.draw()
+            player.draw(deck)
             break
         else:
             print("Please enter a valid choice.")
