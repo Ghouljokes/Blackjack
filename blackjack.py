@@ -16,16 +16,29 @@ class User(Dude):
             print(f"{to_match.name} doesn't have that many chips!")
             self.place_bet(to_match)
 
+    def make_choice(self) -> str:
+        valid_choices = ["1", "2"]
+        print("What would you like to do? Select a number:\n   1) hit\n   2) stay")
+        if self.can_surrender:
+            print("   3) surrender")
+            valid_choices.append("3")
+        if self.can_double_down:
+            print("   4) double down")
+            valid_choices.append("4")
+        choice = input()
+        while choice not in valid_choices:
+            choice = input("Please enter a valid choice.\n")
+        return choice
+
 
 dealer = Dude(5000, "Dealer")
 player = User(1000, "Player")
 
 
 def play_round() -> None:
+    print("NEW ROUND")
     print(f"House chips: {dealer.chips},  Player chips: {player.chips}")
-    #can_surrender = True
     player.place_bet(dealer)
-    #can_double_down = player.bet * 2 <= player.chips
     for card in deck:
         card.in_deck = True
     dealer.prep_round(deck)
@@ -37,25 +50,23 @@ def play_round() -> None:
         player.earns_from(int(-1.5 * player.bet), dealer)
         return
 
+#PLAN: make it so responses to choices are same enough for player and bot, then have the decision making be
+#unique to each (player's get_decision is basically just getting the input. Bot decision is based around
+# checking totals)
     while player.get_total() < 21:
         print(player.show_hand())
         print("Your bet: " + str(player.bet))
-        print("What would you like to do? Select a number:\n   1) hit\n   2) stay")
-        if player.can_surrender:
-            print("   3) surrender")
-        if player.can_double_down:
-            print("   4) double down")
-        choice = input()
+        choice = player.make_choice()
         if choice == "1":
             player.draw(deck)
             player.can_surrender, player.can_double_down = False, False
         elif choice == "2":
             break
-        elif choice == "3" and player.can_surrender:
+        elif choice == "3":
             print(f"You surrender and lose {int(.5 * player.bet)} chips")
             player.earns_from(int(-.5 * player.bet), dealer)
             return
-        elif choice == "4" and player.can_double_down:
+        elif choice == "4":
             player.bet *= 2
             player.draw(deck)
             break
@@ -67,7 +78,7 @@ def play_round() -> None:
         print(f"Blackjack! You win {int(1.5 * player.bet)} chips.")
         player.earns_from(int(1.5 * player.bet), dealer)
         return
-    elif player.get_total() > 21:
+    if player.get_total() > 21:
         print(f"You overshoot and lose {player.bet} chips.")
         player.earns_from(-player.bet, dealer)
         return

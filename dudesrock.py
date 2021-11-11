@@ -52,3 +52,4 @@ class Dude:
     def earns_from(self, amount: int, earned_from: object) -> None:
         self.chips += amount
         earned_from.chips -= amount
+

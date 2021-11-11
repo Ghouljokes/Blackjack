@@ -15,12 +15,23 @@ class Airobot1(Dude):
             self.bet = self.chips
         print(f"{self.name} bets {self.bet} chips.")
 
+    def make_choice(self) -> str:
+        if self.get_total() in range(9, 12) and self.can_double_down:
+            return "4"
+        elif self.get_total() < 16:
+            return "1"
+        elif self.get_total() == 16 and self.can_surrender:
+            return "3"
+        else:
+            return "2"
+
 
 dealer = Dude(500, "Dealer")
 robot1 = Airobot1(100, "robot1")
 
 
 def play_round() -> None:
+    print("NEW ROUND")
     print(f"House chips: {dealer.chips}, robot1 chips: {robot1.chips}")
     robot1.place_bet(robot1.chips//3, dealer)
     for card in deck:
@@ -29,7 +40,6 @@ def play_round() -> None:
     robot1.prep_round(deck)
     print(f"Dealer's hand: {dealer.hand[0].get_full_name()}, hidden")
 
-    #time.sleep(0.5)
 
     if dealer.get_total() == 21:
         print(f"{dealer.show_hand()}\n Blackjack! Dealer wins {int(1.5 * robot1.bet)} chips.")
@@ -38,30 +48,31 @@ def play_round() -> None:
 
     while robot1.get_total() < 21:
         print(robot1.show_hand())
-        if robot1.get_total() in range(9,12) and robot1.can_double_down:
-            print("Robot1 chooses to double down.")
-            robot1.bet *= 2
-            robot1.draw(deck)
-            break
-        elif robot1.get_total() < 16:
+        choice = robot1.make_choice()
+        if choice == "1":
             robot1.draw(deck)
             print("Robot1 chooses to hit.")
             robot1.can_surrender, robot1.can_double_down = False, False
-        elif robot1.get_total() == 16 and robot1.can_surrender:
+        elif choice == "2":
+            print("Robot1 chooses to stay.")
+            break
+        elif choice == "3":
             print(f"Robot1 surrenders and gives up {int(.5 * robot1.bet)} chips.")
             robot1.earns_from(int(-.5 * robot1.bet), dealer)
             return
         else:
-            print("Robot1 chooses to stay.")
+            print("Robot1 chooses to double down.")
+            robot1.bet *= 2
+            robot1.draw(deck)
             break
-    #time.sleep(0.5)
+
     print(robot1.show_hand())
-    #time.sleep(0.3)
+
     if robot1.get_total() == 21:
         print(f"Blackjack! Robot1 wins {int(1.5 * robot1.bet)} chips.")
         robot1.earns_from(int(1.5 * robot1.bet), dealer)
         return
-    elif robot1.get_total() > 21:
+    if robot1.get_total() > 21:
         print(f"Robot1 overshoots and loses {robot1.bet} chips.")
         robot1.earns_from(-robot1.bet, dealer)
         return
