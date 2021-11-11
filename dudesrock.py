@@ -49,4 +49,50 @@ class Dude:
     def earns_from(self, amount: int, earned_from: object) -> None:
         self.chips += amount
         earned_from.chips -= amount
+        
 
+class Airobot1(Dude):
+ 
+    def place_bet(self, to_match: object) -> None:
+        self.bet = self.chips // 3
+        if self.bet > to_match.chips:
+            self.bet = to_match.chips
+        elif self.bet <= 10:
+            self.bet = self.chips
+        print(f"{self.name} bets {self.bet} chips.")
+
+    def make_choice(self) -> str:
+        if self.get_total() in range(9, 12) and self.can_double_down:
+            return "4"
+        elif self.get_total() < 16:
+            return "1"
+        elif self.get_total() == 16 and self.can_surrender:
+            return "3"
+        else:
+            return "2"
+
+
+class User(Dude):
+
+    def place_bet(self, to_match: object) -> None:
+        self.bet = int(input("Place your bet: "))
+        if self.bet > self.chips:
+            print("You don't have enough chips!")
+            self.place_bet(to_match)
+        if self.bet > to_match.chips:
+            print(f"{to_match.name} doesn't have that many chips!")
+            self.place_bet(to_match)
+
+    def make_choice(self) -> str:
+        valid_choices = ["1", "2"]
+        print("What would you like to do? Select a number:\n   1) hit\n   2) stay")
+        if self.can_surrender:
+            print("   3) surrender")
+            valid_choices.append("3")
+        if self.can_double_down:
+            print("   4) double down")
+            valid_choices.append("4")
+        choice = input()
+        while choice not in valid_choices:
+            choice = input("Please enter a valid choice.\n")
+        return choice

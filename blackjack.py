@@ -1,10 +1,22 @@
-import time
-from dudesrock import Dude, User
+from dudesrock import Dude, User, Airobot1
 from deck import deck as deck
 
+print("Enter your preferred mode of play:")
+print("    1) User controlled")
+print("    2) Automatic")
+bot_or_not = "3"
+while True:
+    bot_or_not = input()
+    if bot_or_not in ["1", "2"]:
+        break
+    print("Please enter a valid number.")
+
+if bot_or_not == "1":
+    player = User(1000, input("What is your name?\n"))
+else:
+    player = Airobot1(1000, "BJbot")
 
 dealer = Dude(5000, "Dealer")
-player1 = User(1000, input("What is your name?\n"))
 
 
 def play_round(player: object) -> None:
@@ -70,10 +82,9 @@ def play_round(player: object) -> None:
         print("Evened out")
 
 
-while player1.chips > 0 and dealer.chips > 0:
-    play_round(player1)
-if player1.chips <= 0:
-    for i in range(100):
-        print("You've gone and busted my good man. You've gone and busted my good man. You've gone and busted my good man. ")
+while player.chips > 0 and dealer.chips > 0:
+    play_round(player)
+if player.chips <= 0:
+    print(f"{player.name} lost all their chips")
 elif dealer.chips <= 0:
-    print("The dealers have had enough and banned you from the casino. Congratulations!")
+    print("The casino is now bankrupt.")

@@ -1,27 +1,6 @@
 import time
-from dudesrock import Dude
+from dudesrock import Dude, Airobot1
 from deck import deck as deck
-
-
-class Airobot1(Dude):
- 
-    def place_bet(self, to_match: object) -> None:
-        self.bet = self.chips // 3
-        if self.bet > to_match.chips:
-            self.bet = to_match.chips
-        elif self.bet <= 10:
-            self.bet = self.chips
-        print(f"{self.name} bets {self.bet} chips.")
-
-    def make_choice(self) -> str:
-        if self.get_total() in range(9, 12) and self.can_double_down:
-            return "4"
-        elif self.get_total() < 16:
-            return "1"
-        elif self.get_total() == 16 and self.can_surrender:
-            return "3"
-        else:
-            return "2"
 
 
 dealer = Dude(500, "Dealer")
