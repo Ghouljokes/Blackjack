@@ -87,4 +87,4 @@ while player.chips > 0 and dealer.chips > 0:
 if player.chips <= 0:
     print(f"{player.name} lost all their chips")
 elif dealer.chips <= 0:
-    print("The casino is now bankrupt.")
+    print("The casino is now bankrupt")
