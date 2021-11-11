@@ -1,6 +1,5 @@
 import random
 import copy
-import time
 
 class Dude:
     def __init__(self, startingchips: int, name: str) -> None:
@@ -49,7 +48,7 @@ class Dude:
     def earns_from(self, amount: int, earned_from: object) -> None:
         self.chips += amount
         earned_from.chips -= amount
-        
+
 
 class Airobot1(Dude):
  

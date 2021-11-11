@@ -1,6 +1,8 @@
 from dudesrock import Dude, User, Airobot1
 from deck import deck as deck
 
+dealer = Dude(5000, "Dealer")
+
 print("Enter your preferred mode of play:")
 print("    1) User controlled")
 print("    2) Automatic")
@@ -15,8 +17,6 @@ if bot_or_not == "1":
     player = User(1000, input("What is your name?\n"))
 else:
     player = Airobot1(1000, "BJbot")
-
-dealer = Dude(5000, "Dealer")
 
 
 def play_round(player: object) -> None:
@@ -85,6 +85,6 @@ def play_round(player: object) -> None:
 while player.chips > 0 and dealer.chips > 0:
     play_round(player)
 if player.chips <= 0:
-    print(f"{player.name} lost all their chips")
+    print(f"{player.name} lost all their chips.")
 elif dealer.chips <= 0:
-    print("The casino is now bankrupt")
+    print("The casino is now bankrupt.")

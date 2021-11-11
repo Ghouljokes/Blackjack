@@ -8,8 +8,8 @@ class Card:
     def get_full_name(self) -> str:
         return f"{self.name} of {self.suit}"
 
-deck = []
 
+deck = []
 for suit in ["hearts", "diamonds", "spades", "clubs"]:
     deck.append(Card(11, "Ace", suit))
     for i in range(2, 11):
