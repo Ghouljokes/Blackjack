@@ -27,9 +27,6 @@ class Dude:
         self.can_surrender = True
         self.can_double_down = self.bet * 2 <= self.chips
     
-    def debug_draw(self, index: int, cards: list) -> None:
-        self.hand.append(copy.deepcopy(cards[index]))
-
     def get_total(self) -> int:
         return sum([card.value for card in self.hand])
 

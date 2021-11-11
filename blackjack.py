@@ -1,9 +1,8 @@
-import random
-import copy
 import time
 from dudesrock import Dude
 from deck import deck as deck
 
+#MAKE IT SO YOU CAN CHOOSE YOUR OWN NAME FOR THE PLAYER
 
 class User(Dude):
 
@@ -50,12 +49,8 @@ def play_round() -> None:
         player.earns_from(int(-1.5 * player.bet), dealer)
         return
 
-#PLAN: make it so responses to choices are same enough for player and bot, then have the decision making be
-#unique to each (player's get_decision is basically just getting the input. Bot decision is based around
-# checking totals)
     while player.get_total() < 21:
         print(player.show_hand())
-        print("Your bet: " + str(player.bet))
         choice = player.make_choice()
         if choice == "1":
             player.draw(deck)
@@ -72,6 +67,7 @@ def play_round() -> None:
             break
         else:
             print("Please enter a valid choice.")
+
     print(player.show_hand())
 
     if player.get_total() == 21:
