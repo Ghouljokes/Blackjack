@@ -31,12 +31,12 @@ class User(Dude):
 
 
 dealer = Dude(5000, "Dealer")
-player = User(1000, "Player")
+player1 = User(1000, input("What is your name?\n"))
 
 
-def play_round() -> None:
+def play_round(player: object) -> None:
     print("NEW ROUND")
-    print(f"House chips: {dealer.chips},  Player chips: {player.chips}")
+    print(f"House chips: {dealer.chips}, {player.name}'s chips: {player.chips}")
     player.place_bet(dealer)
     for card in deck:
         card.in_deck = True
@@ -54,53 +54,52 @@ def play_round() -> None:
         choice = player.make_choice()
         if choice == "1":
             player.draw(deck)
+            print(f"{player.name} chooses to hit.")
             player.can_surrender, player.can_double_down = False, False
         elif choice == "2":
+            print(f"{player.name} chooses to stay.")
             break
         elif choice == "3":
-            print(f"You surrender and lose {int(.5 * player.bet)} chips")
+            print(f"{player.name} surrenders and gives up {int(.5 * player.bet)} chips.")
             player.earns_from(int(-.5 * player.bet), dealer)
             return
-        elif choice == "4":
+        else:
+            print(f"{player.name} chooses to double down.")
             player.bet *= 2
             player.draw(deck)
             break
-        else:
-            print("Please enter a valid choice.")
 
     print(player.show_hand())
 
     if player.get_total() == 21:
-        print(f"Blackjack! You win {int(1.5 * player.bet)} chips.")
+        print(f"Blackjack! {player.name} wins {int(1.5 * player.bet)} chips.")
         player.earns_from(int(1.5 * player.bet), dealer)
         return
     if player.get_total() > 21:
-        print(f"You overshoot and lose {player.bet} chips.")
+        print(f"{player.name} overshoots and loses {player.bet} chips.")
         player.earns_from(-player.bet, dealer)
         return
 
-    time.sleep(0.5)
     print(dealer.show_hand())
-    time.sleep(0.5)
 
     dealer.auto_draw(16, deck)
 
     if dealer.get_total() > 21:
-        print(f"House overshot. You gain {player.bet} chips")
+        print(f"House overshot. {player.name} gains {player.bet} chips.")
         player.earns_from(player.bet, dealer) 
     elif dealer.get_total() > player.get_total():
-        print(f"House wins. You lose {player.bet} chips")
+        print(f"House wins. {player.name} loses {player.bet} chips.")
         player.earns_from(-player.bet, dealer)
     elif dealer.get_total() < player.get_total():
-        print(f"You win. You gain {player.bet} chips")
+        print(f"{player.name} wins. {player.name} gains {player.bet} chips.")
         player.earns_from(player.bet, dealer)
     else:
         print("Evened out")
 
 
-while player.chips > 0 and dealer.chips > 0:
-    play_round()
-if player.chips <= 0:
+while player1.chips > 0 and dealer.chips > 0:
+    play_round(player1)
+if player1.chips <= 0:
     for i in range(100):
         print("You've gone and busted my good man. You've gone and busted my good man. You've gone and busted my good man. ")
 elif dealer.chips <= 0:

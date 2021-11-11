@@ -5,8 +5,8 @@ from deck import deck as deck
 
 class Airobot1(Dude):
  
-    def place_bet(self, bet: int, to_match: object) -> None:
-        self.bet = bet
+    def place_bet(self, to_match: object) -> None:
+        self.bet = self.chips // 3
         if self.bet > to_match.chips:
             self.bet = to_match.chips
         elif self.bet <= 10:
@@ -30,8 +30,8 @@ robot1 = Airobot1(100, "robot1")
 
 def play_round(player: object) -> None:
     print("NEW ROUND")
-    print(f"House chips: {dealer.chips}, {player.name} chips: {player.chips}")
-    player.place_bet(player.chips//3, dealer)
+    print(f"House chips: {dealer.chips}, {player.name}'s chips: {player.chips}")
+    player.place_bet(dealer)
     for card in deck:
         card.in_deck = True
     dealer.prep_round(deck)
@@ -82,10 +82,10 @@ def play_round(player: object) -> None:
         print(f"House overshot. {player.name} gains {player.bet} chips.")
         player.earns_from(player.bet, dealer)
     elif dealer.get_total() > player.get_total():
-        print(f"House wins. {player.name} loses {player.bet} chips")
+        print(f"House wins. {player.name} loses {player.bet} chips.")
         player.earns_from(-player.bet, dealer)
     elif dealer.get_total() < player.get_total():
-        print(f"{player.name} wins. {player.name} gains {player.bet} chips")
+        print(f"{player.name} wins. {player.name} gains {player.bet} chips.")
         player.earns_from(player.bet, dealer)
     else:
         print("Evened out")
