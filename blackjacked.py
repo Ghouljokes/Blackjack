@@ -67,7 +67,9 @@ def play_round(player: object) -> None:
 
     print(dealer.show_hand())
 
-    dealer.auto_draw(16, deck)
+    while dealer.get_total() < 16:
+        dealer.draw(deck)
+        print(dealer.show_hand())
 
     if dealer.get_total() > 21:
         print(f"House overshot. {player.name} gains {player.bet} chips.")

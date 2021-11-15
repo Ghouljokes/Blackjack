@@ -38,13 +38,6 @@ class Dude:
                 card.value = 1
                 return
 
-    def auto_draw(self, goal: int, cards: list, view_hand=True) -> None:
-        while self.get_total() < goal:
-            self.draw(cards)
-            if view_hand:
-                print(self.show_hand())
-                #time.sleep(0.5)
-
     def earns_from(self, amount: int, earned_from: object) -> None:
         self.chips += amount
         earned_from.chips -= amount
