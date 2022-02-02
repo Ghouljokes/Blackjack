@@ -14,9 +14,9 @@ while True:
     print("Please enter a valid number.")
 
 if bot_or_not == "1":
-    player = User(1000, input("What is your name?\n"))
+    player1 = User(1000, input("What is your name?\n"))
 else:
-    player = Airobot(1000, "BJbot")
+    player1 = Airobot(1000, "BJbot")
 
 
 def play_round(player: Dude) -> None:
@@ -84,9 +84,9 @@ def play_round(player: Dude) -> None:
         print("Evened out")
 
 
-while player.chips > 0 and dealer.chips > 0:
-    play_round(player)
-if player.chips <= 0:
-    print(f"{player.name} lost all their chips.")
+while player1.chips > 0 and dealer.chips > 0:
+    play_round(player1)
+if player1.chips <= 0:
+    print(f"{player1.name} lost all their chips.")
 elif dealer.chips <= 0:
     print("The casino is now bankrupt.")

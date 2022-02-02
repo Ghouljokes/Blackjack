@@ -49,7 +49,7 @@ class Dude:
 
 class Airobot(Dude):
  
-    def place_bet(self, to_match: object) -> None:
+    def place_bet(self, to_match: Dude) -> None:
         self.bet = self.chips // 3
         if self.bet > to_match.chips:
             self.bet = to_match.chips
@@ -70,7 +70,7 @@ class Airobot(Dude):
 
 class User(Dude):
 
-    def place_bet(self, to_match: object) -> None:
+    def place_bet(self, to_match: Dude) -> None:
         self.bet = int(input("Place your bet: "))
         if self.bet > self.chips:
             print("You don't have enough chips!")

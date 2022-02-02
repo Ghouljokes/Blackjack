@@ -10,9 +10,9 @@ class Card:
 
 
 deck: list[Card] = []
-for suit in ["hearts", "diamonds", "spades", "clubs"]:
-    deck.append(Card(11, "Ace", suit))
+for suit_name in ["hearts", "diamonds", "spades", "clubs"]:
+    deck.append(Card(11, "Ace", suit_name))
     for i in range(2, 11):
-        deck.append(Card(i, str(i), suit))
+        deck.append(Card(i, str(i), suit_name))
     for face in ["Jack", "Queen", "King"]:
-        deck.append(Card(10, face, suit))
+        deck.append(Card(10, face, suit_name))
