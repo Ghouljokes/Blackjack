@@ -1,6 +1,7 @@
 import random
 import copy
 
+
 class Dude:
     def __init__(self, startingchips: int, name: str) -> None:
         self.hand = []
@@ -9,6 +10,9 @@ class Dude:
         self.bet = 0
         self.can_surrender = True
         self.can_double_down = True
+
+    def place_bet(self, to_match: object) -> None:
+        pass
     
     def draw(self, cards: list) -> None:
         to_draw = random.choice(cards)
@@ -43,7 +47,7 @@ class Dude:
         earned_from.chips -= amount
 
 
-class Airobot1(Dude):
+class Airobot(Dude):
  
     def place_bet(self, to_match: object) -> None:
         self.bet = self.chips // 3

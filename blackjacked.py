@@ -1,4 +1,4 @@
-from dudesrock import Dude, User, Airobot1
+from dudesrock import Dude, User, Airobot
 from deck import deck as deck
 
 dealer = Dude(5000, "Dealer")
@@ -16,15 +16,15 @@ while True:
 if bot_or_not == "1":
     player = User(1000, input("What is your name?\n"))
 else:
-    player = Airobot1(1000, "BJbot")
+    player = Airobot(1000, "BJbot")
 
 
-def play_round(player: object) -> None:
+def play_round(player: Dude) -> None:
     print("NEW ROUND")
     print(f"House chips: {dealer.chips}, {player.name}'s chips: {player.chips}")
-    player.place_bet(dealer)
     for card in deck:
         card.in_deck = True
+    player.place_bet(dealer)
     dealer.prep_round(deck)
     player.prep_round(deck)
     print(f"Dealer's hand: {dealer.hand[0].get_full_name()}, hidden")
