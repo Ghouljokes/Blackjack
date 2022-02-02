@@ -27,7 +27,7 @@ def play_round(player: Dude) -> None:
     player.place_bet(dealer)
     dealer.prep_round(deck)
     player.prep_round(deck)
-    print(f"Dealer's hand: {dealer.hand[0].get_full_name()}, hidden")
+    print(f"Dealer's hand: {dealer.hand[0]}, hidden")
 
     if dealer.get_total() == 21:
         print(f"{dealer.show_hand()}\n Blackjack! Dealer wins {int(1.5 * player.bet)} chips.")

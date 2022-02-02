@@ -4,8 +4,8 @@ class Card:
         self.name = name
         self.suit = suit
         self.in_deck = True
-    
-    def get_full_name(self) -> str:
+
+    def __repr__(self):
         return f"{self.name} of {self.suit}"
 
 
