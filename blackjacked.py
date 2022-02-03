@@ -30,12 +30,13 @@ def play_round(player: Dude) -> None:
     print(f"Dealer's hand: {dealer.hand[0]}, hidden")
 
     if dealer.get_total() == 21:
-        print(f"{dealer.show_hand()}\n Blackjack! Dealer wins {int(1.5 * player.bet)} chips.")
+        dealer.show_hand()
+        print(f"Blackjack! Dealer wins {int(1.5 * player.bet)} chips.")
         player.earns_from(int(-1.5 * player.bet), dealer)
         return
 
     while player.get_total() < 21:
-        print(player.show_hand())
+        player.show_hand()
         choice = player.make_choice()
         if choice == "1":
             player.draw(deck)
@@ -54,7 +55,7 @@ def play_round(player: Dude) -> None:
             player.draw(deck)
             break
 
-    print(player.show_hand())
+    player.show_hand()
 
     if player.get_total() == 21:
         print(f"Blackjack! {player.name} wins {int(1.5 * player.bet)} chips.")
@@ -65,11 +66,11 @@ def play_round(player: Dude) -> None:
         player.earns_from(-player.bet, dealer)
         return
 
-    print(dealer.show_hand())
+    dealer.show_hand()
 
     while dealer.get_total() < 16:
         dealer.draw(deck)
-        print(dealer.show_hand())
+        dealer.show_hand()
 
     if dealer.get_total() > 21:
         print(f"House overshot. {player.name} gains {player.bet} chips.")

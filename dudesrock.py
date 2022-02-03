@@ -34,7 +34,7 @@ class Dude:
         return sum([card.value for card in self.hand])
 
     def show_hand(self) -> str:
-        return f"{self.name} hand: {','.join(card.__repr__() for card in self.hand)}"
+        print(f"{self.name} hand: {', '.join(card.__repr__() for card in self.hand)} \n{self.name} total: {self.get_total()}")
 
     def lower_ace(self) -> None:
         for card in self.hand:
