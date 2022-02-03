@@ -9,10 +9,9 @@ class Card:
         return f"{self.suit}{self.name}"
 
 
+card_vals = {"A": 11, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "J": 10, "Q": 10,
+             "K": 10}
 deck: list[Card] = []
 for suit_name in ["\u2665", "\u2666", "\u2660", "\u2663"]:
-    deck.append(Card(11, "A", suit_name))
-    for i in range(2, 11):
-        deck.append(Card(i, str(i), suit_name))
-    for face in ["J", "Q", "K"]:
-        deck.append(Card(10, face, suit_name))
+    for name, val in card_vals.items():
+        deck.append(Card(val, name, suit_name))
