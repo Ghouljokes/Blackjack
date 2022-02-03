@@ -33,8 +33,9 @@ class Dude:
     def get_total(self) -> int:
         return sum([card.value for card in self.hand])
 
-    def show_hand(self) -> str:
-        print(f"{self.name} hand: {', '.join(card.__repr__() for card in self.hand)} \n{self.name} total: {self.get_total()}")
+    def show_hand(self) -> None:
+        print(f"{self.name} hand: {', '.join(card.__repr__() for card in self.hand)}")
+        print(f"{self.name} total: {self.get_total()}")
 
     def lower_ace(self) -> None:
         for card in self.hand:
@@ -71,7 +72,12 @@ class Airobot(Dude):
 class User(Dude):
 
     def place_bet(self, to_match: Dude) -> None:
-        self.bet = int(input("Place your bet: "))
+        self.bet = input("Place your bet: ")
+        if self.bet.isnumeric():
+            self.bet = int(self.bet)
+        else:
+            print("Please enter a number.")
+            self.place_bet(to_match)
         if self.bet > self.chips:
             print("You don't have enough chips!")
             self.place_bet(to_match)
