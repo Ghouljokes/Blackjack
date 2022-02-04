@@ -3,6 +3,7 @@ import copy
 
 
 class Dude:
+    """represents a player or dealer"""
     def __init__(self, startingchips: int, name: str) -> None:
         self.hand = []
         self.chips = startingchips
@@ -11,10 +12,17 @@ class Dude:
         self.can_surrender = True
         self.can_double_down = True
 
+    def __repr__(self) -> str:
+        return self.name
+
     def place_bet(self, to_match: object) -> None:
-        pass
-    
+        """choose amount of chips to bet"""
+
+    def make_choice(self) -> None:
+        """decide what action to take"""
+
     def draw(self, cards: list) -> None:
+        """draw a card from a deck"""
         to_draw = random.choice(cards)
         while not to_draw.in_deck:
             to_draw = random.choice(cards)
@@ -24,32 +32,38 @@ class Dude:
             self.lower_ace()
 
     def prep_round(self, cards: list) -> None:
+        """readies player for start of round"""
         self.hand = []
         self.draw(cards)
         self.draw(cards)
         self.can_surrender = True
         self.can_double_down = self.bet * 2 <= self.chips
-    
+
     def get_total(self) -> int:
+        """get total value of hand"""
         return sum([card.value for card in self.hand])
 
     def show_hand(self) -> None:
-        print(f"{self.name} hand: {', '.join(card.__repr__() for card in self.hand)}")
+        """show each card in dude's hand"""
+        hand_str = ', '.join(card.__repr__() for card in self.hand)
+        print(f"{self.name} hand: {hand_str}")
         print(f"{self.name} total: {self.get_total()}")
 
     def lower_ace(self) -> None:
+        """change value of first available ace from 11 to 1"""
         for card in self.hand:
             if card.value == 11:
                 card.value = 1
                 return
 
     def earns_from(self, amount: int, earned_from: object) -> None:
+        """get chips from other dude"""
         self.chips += amount
         earned_from.chips -= amount
 
 
 class Airobot(Dude):
- 
+    """ai player"""
     def place_bet(self, to_match: Dude) -> None:
         self.bet = self.chips // 3
         if self.bet > to_match.chips:
@@ -59,6 +73,7 @@ class Airobot(Dude):
         print(f"{self.name} bets {self.bet} chips.")
 
     def make_choice(self) -> str:
+        """decide what to do"""
         if self.get_total() in range(9, 12) and self.can_double_down:
             return "4"
         elif self.get_total() < 16:
@@ -70,7 +85,7 @@ class Airobot(Dude):
 
 
 class User(Dude):
-
+    """user controlled player"""
     def place_bet(self, to_match: Dude) -> None:
         self.bet = input("Place your bet: ")
         if self.bet.isnumeric():
@@ -86,8 +101,9 @@ class User(Dude):
             self.place_bet(to_match)
 
     def make_choice(self) -> str:
+        """decide what to do"""
         valid_choices = ["1", "2"]
-        print("What would you like to do? Select a number:\n   1) hit\n   2) stay")
+        print("Please select a number:\n   1) hit\n   2) stay")
         if self.can_surrender:
             print("   3) surrender")
             valid_choices.append("3")
