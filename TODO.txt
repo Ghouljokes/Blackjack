@@ -1,3 +1,4 @@
+TODO: display bet during turn
 TODO: if Ace in hand, show all possible totals
 TODO: change bjbot's ai so it can win a round for once in its life.
 TODO: add stalls to automatic mode so it's not all instant

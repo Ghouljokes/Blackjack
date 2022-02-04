@@ -1,7 +1,8 @@
-from dudesrock import Dude, User, Airobot
-from deck import deck
+"""Dude class, deck list."""
+from dudesrock import Dude, deck
 
-dealer = Dude(5000, "Dealer")
+
+dealer = Dude(5000, "Dealer", False)
 
 print("Enter your preferred mode of play:")
 print("    1) User controlled")
@@ -14,11 +15,14 @@ while True:
     print("Please enter a valid number.")
 
 
-player1 = User(1000, input("What is your name?\n")) if bot_or_not == "1" else Airobot(1000, "BJbot")
+if bot_or_not == "1":
+    player1 = Dude(1000, input("What is your name?\n"), True)
+else:
+    player1 = Dude(1000, "BJbot", False)
 
 
 def play_round(player: Dude) -> None:
-    """Simulate a round of blackjack"""
+    """Simulate a round of blackjack."""
     print("NEW ROUND")
     print(f"House chips: {dealer.chips}, {player} chips: {player.chips}")
     for card in deck:
