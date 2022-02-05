@@ -23,7 +23,7 @@ else:
 
 def play_round(player: Dude) -> None:
     """Simulate a round of blackjack."""
-    print("NEW ROUND")
+    print("\n\nNEW ROUND\n\n")
     print(f"House chips: {dealer.chips}, {player} chips: {player.chips}")
     for card in deck:
         card.in_deck = True
@@ -39,6 +39,7 @@ def play_round(player: Dude) -> None:
         return
 
     while player.get_total() < 21:
+        print()
         player.show_hand()
         choice = player.make_choice()
         if choice == "1":

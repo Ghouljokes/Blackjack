@@ -2,6 +2,7 @@
 import random
 # copy module.
 import copy
+from unicodedata import name
 
 
 class Card:
@@ -119,6 +120,7 @@ class Dude:
         hand_str = ', '.join(card.__repr__() for card in self.hand)
         print(f"{self.name} hand: {hand_str}")
         print(f"{self.name} total: {self.get_total()}")
+        print()
 
     def lower_ace(self) -> None:
         """Change value of first available ace from 11 to 1."""
